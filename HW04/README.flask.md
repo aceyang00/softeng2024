@@ -15,6 +15,21 @@
 
 2. 만난 일수 체크
 
+![화면 캡처 2024-09-21 171221](https://github.com/user-attachments/assets/25c70af2-c5ca-4b97-b71e-53dc7ce4ac2b)
+
 3. D-day 체크
 
-4. 
+![화면 캡처 2024-09-21 171237](https://github.com/user-attachments/assets/1aff2542-c28c-4f17-abf6-50005c474b6c)
+
+- /calculate 기본화면
+
+![화면 캡처 2024-09-21 172439](https://github.com/user-attachments/assets/d344e12f-150a-45b1-bc6b-a99bfb4c8041)
+
+- 입력값 오류
+
+  ![화면 캡처 2024-09-21 172420](https://github.com/user-attachments/assets/eb54e150-e704-4144-a3d7-f7c15639ac43)
+
+  
+
+
+ 
