@@ -11,6 +11,8 @@
 ### 사귄 날짜 계산기
 1. 메인화면
 
+![스크린샷 2024-09-21 171150](https://github.com/user-attachments/assets/c1080c2e-7040-465d-b249-ed1f49e91f49)
+
 2. 만난 일수 체크
 
 3. D-day 체크
