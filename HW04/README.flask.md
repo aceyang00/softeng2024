@@ -27,7 +27,7 @@
 
 - 입력값 오류
 
-  ![화면 캡처 2024-09-21 172420](https://github.com/user-attachments/assets/eb54e150-e704-4144-a3d7-f7c15639ac43)
+![화면 캡처 2024-09-21 172420](https://github.com/user-attachments/assets/eb54e150-e704-4144-a3d7-f7c15639ac43)
 
   
 
