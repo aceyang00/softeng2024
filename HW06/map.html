@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>찾아오시는길</title>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=438dd6e2862023e1008de6d669f9e878"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            width: 100%;
+            background-color: ghostwhite;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            z-index: 10;
+        }
+
+        nav a {
+            color: green;
+            margin: 0 35px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        #header {
+            color: green;
+            text-align: center;
+            padding: 65px 0 5px; /* 상단 패딩 조정 */
+            margin-top: 10px;
+        }
+
+        #header h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+
+        #map {
+            width: 100%;
+            height: 500px;
+            margin-top: 20px;
+        }
+
+        #location-info {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .info-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">홈</a>
+        <a href="members.html">멤버스</a>
+        <a href="edu.html">교육과정</a>
+        <a href="map.html">찾아오는 길</a>
+    </nav>
+
+    <div id="header">
+        <h1>전북대학교 스마트팜학과 찾아오시는 길</h1>
+    </div>
+
+    <div id="map"></div>
+
+    <div id="location-info">
+        <div class="info-box">
+            <h3>전북대학교 전주캠퍼스</h3>
+            <p>주소: (54896) 전북 전주시 덕진구 백제대로 567 농생명과학대학 1호관 402호</p>
+            <p>전화: 063-270-2555</p>
+            <p>팩스: 063-270-2556</p>
+        </div>
+    </div>
+
+    <script>
+        // 지도 표시
+        var container = document.getElementById('map'); // 지도를 표시할 div
+        var options = {
+            center: new kakao.maps.LatLng(35.849211811128455, 127.13051896169794), // 전북대학교 위치
+            level: 3 // 지도의 확대 레벨
+        };
+
+        var map = new kakao.maps.Map(container, options); // 지도 생성
+
+        // 마커를 표시할 위치
+        var markerPosition = new kakao.maps.LatLng(35.849211811128455, 127.13051896169794);
+
+        // 마커 생성
+        var marker = new kakao.maps.Marker({
+            position: markerPosition
+        });
+
+        // 마커를 지도에 표시
+        marker.setMap(map);
+
+        // 지도 타입 컨트롤 추가
+        var mapTypeControl = new kakao.maps.MapTypeControl();
+        map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+        // 지도 확대 축소를 제어할 수 있는 줌 컨트롤 추가
+        var zoomControl = new kakao.maps.ZoomControl();
+        map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+    </script>
+
+</body>
+</html>
