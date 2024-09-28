@@ -1,3 +1,3 @@
 # 과제 #06 팀홈페이지 만들기
 
-### 홈
+### 팀홈페이지 URL : https://aceyang00.github.io/softeng2024/
