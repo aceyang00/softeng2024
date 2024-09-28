@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>스마트팜학과</title>
+    <style>  /* CSS 주석처리방법*/
+         body {
+             height: 100vh;
+             background-size: cover;
+             background-position: center;
+             background-repeat: repeat;
+             animation: changeBackground 10s infinite;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             flex-direction: column;
+        }
+
+        @keyframes changeBackground {
+            0% {background-image: url('./images/jbnu1.png');}
+            50% {background-image: url('./images/jbnu2.png');}
+            100% {background-image: url('./images/jbnu1.png');}
+        }
+
+        nav{
+            width: 100%;
+            background-color: ghostwhite;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+        }
+
+        nav a {
+             color: green;
+             margin: 0 35px;
+             font-weight: bold;
+             text-decoration: none;
+             font-size: 18px;
+        }
+        nav a:hover {text-decoration: underline;}
+
+        h1 {
+            color: green; /* 검정색 텍스트 */
+            font-weight: bold; /* 굵은 글씨 */
+            font-size: 58px; /* 글자 크기 */
+            margin-top: -450px; /* 위에서 약간 아래로 내리기 */
+            position: absolute;
+            text-align: center;
+        }
+
+        @keyframes sflogo {
+            0% {transform: scale(0); opacity: 0;}
+            50% {transform: scale(1.2); opacity: 0.8;}
+            100% {transform: scale(1); opacity: 1;}
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 40%;
+            width: 80px;
+            height: 80px;
+            background-image: url('./images/sf.png');
+            background-size: contain;
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+        }
+        h1:hover::after {animation: sflogo 1s forwards;}
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 130px;
+            margin-top: 20px;
+        }
+
+        .button-container a {
+            display: inline-block;
+            width: 120px;
+            height: 120px;
+            background-image: url('./images/button.png'); /* button.png 이미지 추가 */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            text-indent: -9999px; /* 텍스트 숨김 */
+            border: none;
+        }
+
+        .button-container a:hover {
+            transform: scale(1.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">홈</a>
+        <a href="교수진.html">맴버스</a>
+        <a href="#">교육과정</a>
+        <a href="#">찾아오는 길</a>
+    </nav>
+
+    <div class="button-container">
+        <a href="교수진.html">맴버스</a>
+        <a href="#">교육과정</a>
+        <a href="#">찾아오는 길</a>
+    </div>
+
+    <h1>Smart Farm</h1>
+</body>
+</html>
