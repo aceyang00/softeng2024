@@ -52,10 +52,12 @@ body {
 }
 
 .profile-info ul li {
+    text-align: left; /* 왼쪽 정렬 */
     margin-bottom: 10px;
 }
 
 .profile-info ul li strong {
+    text-align: left; /* 왼쪽 정렬 */
     margin-right: 10px;
 }
 
