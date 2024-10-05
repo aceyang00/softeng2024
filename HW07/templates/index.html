@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}스마트팜학과{% endblock %}
+
+{% block content %}
+<div class="button-container">
+    <a href="{{ url_for('members') }}" class="button-item">
+        <img src="{{ url_for('static', filename='images/button.png') }}" alt="멤버스 버튼">
+        멤버스
+    </a>
+    <a href="{{ url_for('edu') }}" class="button-item">
+        <img src="{{ url_for('static', filename='images/button.png') }}" alt="교육과정 버튼">
+        교육과정
+    </a>
+    <a href="{{ url_for('map') }}" class="button-item">
+        <img src="{{ url_for('static', filename='images/button.png') }}" alt="찾아오는 길 버튼">
+        찾아오는 길
+    </a>
+</div>
+
+<h1>Smart Farm</h1>
+{% endblock %}
