@@ -36,7 +36,7 @@ def blog():
 # <csv파일에 13개의 데이터를 작성해둠. 불러오려 했는데 실패. ParserError뜨면서 blog.html 화면 안열림.>
 """@app.route('/blog')
 def blog():
-    df = pd.read_csv('blog_content.csv', encoding='utf-8')   #인코딩 문제인지 모르겠는데 
+    df = pd.read_csv('blog_content.csv', encoding='utf-8')  
     posts = []
     for i, row in df.iterrows():
         posts.append({'title': row['title'], 'content': row['content']})
