@@ -11,6 +11,6 @@
 - grid는 기본적으로 12칸
 - col-md-4로 설정 = 3등분
 - 한 줄에 내용 3개씩
-- 
+ 
 ### 4. 작성한 내용이 없을 경우
   ![화면 캡처 2024-10-19 201844](https://github.com/user-attachments/assets/ce83697a-9994-43ee-ac9a-4f99eef68705)
