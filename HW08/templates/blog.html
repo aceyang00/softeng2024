@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid"
+     style="background-color: rgba(248, 248, 255, 0.9);
+            width: 90vw;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;">
+
+    <div class="row" style="position: sticky; top: 60px; z-index: 1000; background-color: rgba(248, 248, 255, 0.9);">
+        <div class="col-md-12">
+            <h1 class="text-center my-4">Blog</h1>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 150px;"></div>
+
+    {% if posts|length > 0 %}
+        {% for i in range(0, posts|length, 3) %}    <!-- posts 리스트에서 3개씩 처리 -->
+            <div class="row mb-4">    <!-- 행 사이의 간격 4로 설정 -->
+                <div class="col-md-4">    <!-- 12칸을 4칸씩 = 3등분-->
+                    <h3 class="font-weight-bold" style="font-size: 1.25rem;">{{ posts[i].title }}</h3>
+                    <p>{{ posts[i].content }}</p>
+                </div>
+
+                {% if i + 1 < posts|length %} <!-- 두 번째 게시물이 있는지 확인 후 출력 -->
+                <div class="col-md-4">
+                    <h5 class="font-weight-bold" style="font-size: 1.25rem;">{{ posts[i + 1].title }}</h5>
+                    <p>{{ posts[i + 1].content }}</p>
+                </div>
+                {% endif %}
+
+                {% if i + 2 < posts|length %} <!-- 세 번째 게시물이 있는지 확인 후 출력 -->
+                <div class="col-md-4">
+                    <h5 class="font-weight-bold" style="font-size: 1.25rem;">{{ posts[i + 2].title }}</h5>
+                    <p>{{ posts[i + 2].content }}</p>
+                </div>   <!--한 줄에 최대 3개의 게시물이 출력된 후 줄(row)을 닫음-->
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <p class="text-center">아직 작성하지 않았습니다.</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

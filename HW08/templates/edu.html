@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block title %}교육과정{% endblock %}
+
+{% block content %}
+<div class="image-container">
+    <img src="{{ url_for('static', filename='images/edu1.png') }}" alt="교육 이미지 1" class="edu1">
+    <img src="{{ url_for('static', filename='images/edu2.png') }}" alt="교육 이미지 2" class="edu2">
+    <img src="{{ url_for('static', filename='images/edu3.png') }}" alt="교육 이미지 3" class="edu3">
+</div>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f0f0f0;
+        flex-direction: column;}
+    .image-container {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 20px;
+        max-width: 1200px;
+        padding: 80px 20px 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);}
+    .image-container img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        object-fit: contain;}
+    .edu1 {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+        height: 60%;
+        margin-top: 350px;
+        align-self: center;}
+    .edu2 {
+        grid-column: 2;
+        grid-row: 1;
+        margin-top: 200px;}
+    .edu3 {
+        grid-column: 2;
+        grid-row: 2;}
+</style>
+{% endblock %}
+
+
