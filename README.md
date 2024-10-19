@@ -13,6 +13,6 @@ HW06 : 학과 홈페이지 만들기
 
 HW07 : 학과 홈페이지 만들기 - 템플릿이용
 
-
+HW08 : Bootstrap 활용 & Font Awesome 이용
 
 
