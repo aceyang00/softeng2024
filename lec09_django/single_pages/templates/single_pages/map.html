@@ -1,0 +1,65 @@
+{% extends "./layout.html" %}
+{% load static %}
+
+{% block title %}찾아오시는 길{% endblock %}
+
+{% block content %}
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;}
+        #header {
+            background-color: ghostwhite;
+            padding: 20px 0;
+            text-align: center;}
+        #content-container {
+            height: calc(100vh - 60px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;}
+        #map {
+            width: 90%;
+            height: 70%;
+            max-width: 1000px;
+            margin: 20px auto;}
+        #location-info {
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 20px;}
+        .info-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px #ddd;
+            background-color: ghostwhite;}
+    </style>
+    <div id="content-container">
+        <div id="header"></div>
+        <div id="map"></div>
+        <div id="location-info">
+            <div class="info-box">
+                <h3>전북대학교 전주캠퍼스</h3>
+                <p>주소: (54896) 전북 전주시 덕진구 백제대로 567 농생명과학대학 1호관 402호</p>
+                <p>전화: 063-270-2555</p>
+                <p>팩스: 063-270-2556</p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=438dd6e2862023e1008de6d669f9e878"></script>
+    <script>
+        var container = document.getElementById('map');
+        var options = {center: new kakao.maps.LatLng(35.849211811128455, 127.13051896169794), level: 3};
+        var map = new kakao.maps.Map(container, options); // 지도 생성
+        var markerPosition = new kakao.maps.LatLng(35.849211811128455, 127.13051896169794);
+        var marker = new kakao.maps.Marker({position: markerPosition});
+        marker.setMap(map);
+        var mapTypeControl = new kakao.maps.MapTypeControl();
+        map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+        var zoomControl = new kakao.maps.ZoomControl();
+        map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+    </script>
+{% endblock %}
+
+<!--map주소는 github에 할당되어있어 깃허브 주소가 아닌곳에서 접근하면 지도 안뜸.-->
