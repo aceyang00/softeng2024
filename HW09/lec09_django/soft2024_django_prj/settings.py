@@ -55,7 +55,7 @@ ROOT_URLCONF = "soft2024_django_prj.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        'DIRS': [BASE_DIR / "templates"],  # 템플릿 폴더를 지정 해줘야하는건가?
+        'DIRS': [BASE_DIR / "templates"],  # 템플릿 폴더를 지정 해줘야 하는건가?
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -63,6 +63,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+
             ],
         },
     },

@@ -1,46 +1,66 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;}
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    padding: 80px 50px 50px;}
-.profile-container {
+    box-sizing: border-box;
+}
+
+
+
+
+.profile-page {
+    padding-top: 40px;
+    padding-bottom: 20px;/* 고정된 헤더 높이만큼 상단 여백 추가 */
+}
+
+.profile-page .profile-container {
+    padding-top: 60px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 30px;
-    margin-top: 200px;}
-.profile-card, .student-card {
-    display: flex;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 700px;
+    gap: 20px;
+    justify-content: center;
+}
+
+.profile-page .profile-card,
+.profile-page .student-card {
+    width: 30%; /* 카드의 너비를 고정하여 균일하게 */
+    max-width: 100%;
     padding: 20px;
-    align-items: center;
-    flex-basis: calc(50% - 20px);}
-.profile-image img {
-    width: 150px;
-    height: 200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: white;
+    text-align: center;
+}
+
+.profile-page .profile-image img {
+    width: 100%;
+    max-width: 150px; /* 이미지 최대 너비 제한 */
+    height: auto;
     object-fit: cover;
-    border-radius: 5px;}
-.profile-info {
-    margin-left: 20px;
-    display: flex;
-    flex-direction: column;}
-.profile-info h1 {
-    font-size: 24px;
-    margin-bottom: 10px;}
-.profile-info ul {
-    list-style-type: none;}
-.profile-info ul li {
-    text-align: left;
-    margin-bottom: 10px;}
-.profile-info ul li strong {
-    text-align: left;
-    margin-right: 10px;}
-.student-card {
-    border: 2px solid #4CAF50;}
+    display: block;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
+.profile-page .profile-info {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.profile-page .profile-info ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.profile-page .profile-info ul li {
+    margin-bottom: 8px;
+    font-size: 0.9rem; /* 폰트 크기 줄이기 */
+}
+
+.profile-page .profile-info ul li strong {
+    margin-right: 5px;
+}
+
+.profile-page .student-card {
+    border: 2px solid #4CAF50;
+}
