@@ -6,11 +6,15 @@
 </head>
 <body>
 <nav>
-    <a href="/blog/">Blog</a>
 </nav>
-<h1>{{post.title}}</h1>
-<h4>{{post.created_at}}</h4>
-<p>{{post.content}}</p>
+{% for p in posts %}
+    <h2/>
+
+    <h1>{{post.title}}</h1>
+<h2><a href=" {{ get_absolute_url }} ">Blog</a></h2>
+    <h4>{{post.created_at}}</h4>
+    <p>{{post.content}}</p>
+{% endfor %}
 <h3>여기에 댓글</h3>
 </body>
 </html>
