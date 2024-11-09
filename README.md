@@ -18,3 +18,15 @@ HW08 : Bootstrap 활용 & Font Awesome 이용
 HW09 : 학과 홈페이지 만들기 - django
 
 HW10 : 학과 홈페이지 만들기 - django_blog
+
+HW11 : 학과 홈페이지 만들기 - todo_app
+
+[페이지 만들기]
+
+ - CBV : 클래스를 활용해서 
+
+[todo 작성]
+
+-> todo_app 만들기
+
+-> 데이터는 블로그와 동일하게 db.sqlite3을 사용하지만 관리자모드가 아닌 todo에서 직접 생성과 삭제 가능
