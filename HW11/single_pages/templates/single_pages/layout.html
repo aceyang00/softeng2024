@@ -95,7 +95,9 @@
         <a href="{% url 'single_pages:members_page' %}">멤버스</a>
         <a href="{% url 'single_pages:edu_page' %}">교육과정</a>
         <a href="{% url 'single_pages:map_page' %}">찾아오는 길</a>
-        <a href="{% url 'single_pages:blog_list' %}">게시판</a>
+        <a href="{% url 'blog' %}">블로그</a>
+        <a href="{% url 'index' %}">todo</a>
+
     </nav>
     <main role="main">
         {% block content %}{% endblock %}
