@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ post.title }}</h1>
+<p>by {{ post.author }} ({{ post.created_at }})</p>
+<p>{{ post.content }}</p>
+
+<h2>Comments</h2>
+<ul>
+    {% for comment in comments %}
+    <li>{{ comment.content }} by {{ comment.author }} ({{ comment.created_at }})</li>
+    {% endfor %}
+</ul>
+
+<h3>Add a Comment</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Comment</button>
+</form>
+
+<a href="{% url 'community:blog_edit' post.pk %}">Edit</a>
+<a href="{% url 'community:blog_delete' post.pk %}">Delete</a>
+{% endblock %}
