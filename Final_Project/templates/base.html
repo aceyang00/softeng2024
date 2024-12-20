@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Trading System</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* 푸터를 항상 아래로 배치하는 레이아웃 */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        main {
+            flex: 1; /* 메인 컨텐츠가 화면을 채우도록 확장 */
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .navbar {
+            background-color: #2c3e50;
+            padding: 10px 0;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li {
+            display: inline;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .nav-links a:hover {
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <!-- 네비게이션 바 -->
+    <header>
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'carbon:trade' %}">Trade Carbon Credits</a></li>
+                <li><a href="{% url 'carbon:calculate' %}">Calculate Carbon Usage</a></li>
+                <li><a href="{% url 'community:blog_list' %}">Community</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'carbon:dashboard' %}">My Dashboard</a></li>
+                    <li>
+                        <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="logout-button">Logout</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'community:register' %}">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- 푸터 -->
+    <footer>
+        <p>&copy; 2024 Carbon Trading System. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
