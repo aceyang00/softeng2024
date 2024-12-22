@@ -67,14 +67,24 @@ def blog_delete(request, pk):
     return render(request, 'community/blog_confirm_delete.html', {'post': post})
 
 
-# 회원가입
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)  # 회원가입 후 자동 로그인
-            return redirect('community:blog_list')  # 회원가입 후 블로그 목록 페이지로 리디렉션
+            return redirect('/')  # 회원가입 후 홈 페이지로 리디렉션
     else:
         form = UserCreationForm()
     return render(request, 'community/register.html', {'form': form})
+
+from django.shortcuts import render
+from community.models import BlogPost  # community 앱의 BlogPost 모델
+
+def home_view(request):
+    latest_post = BlogPost.objects.order_by('-created_at').first()  # 최신 글 가져오기
+    return render(request, 'home.html', {
+        'latest_post': latest_post
+    })
+
+
