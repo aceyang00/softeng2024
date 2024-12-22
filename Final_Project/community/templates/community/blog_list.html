@@ -1,18 +1,222 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Blog List{% endblock %}
+{% block title %}커뮤니티 블로그{% endblock %}
 
 {% block content %}
-<h1>Blog Posts</h1>
-<ul>
+<style>
+    body {
+        background-color: #f4f4f4;
+        font-family: 'Roboto', sans-serif;
+    }
+    .blog-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    h1 {
+        color: #333;
+        font-size: 2.5em;
+        margin-bottom: 30px;
+        text-align: center;
+        font-weight: 700;
+    }
+    .filter-bar {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+    }
+    .search-bar {
+        display: flex;
+        margin-bottom: 15px;
+    }
+    .search-bar input {
+        flex-grow: 1;
+        margin-right: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+    }
+    .categories {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .categories a {
+        text-decoration: none;
+        color: #555;
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+    }
+    .categories a:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+    .blog-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    .blog-card {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 20px;
+        transition: transform 0.3s ease;
+    }
+    .blog-card:hover {
+        transform: translateY(-5px);
+    }
+    .blog-title {
+        font-size: 1.4em;
+        color: #333;
+        margin-bottom: 10px;
+    }
+    .blog-author, .blog-date {
+        color: #777;
+        font-size: 0.9em;
+        margin-bottom: 5px;
+    }
+    .blog-likes {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 15px;
+    }
+    .like-btn {
+        background-color: #f8f9fa;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .like-btn:hover {
+        background-color: #e2e6ea;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+    }
+    .pagination a, .pagination span {
+        margin: 0 5px;
+    }
+    .btn-success {
+        background-color: #28a745;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+    .btn-success:hover {
+        background-color: #218838;
+    }
+</style>
+
+<div class="blog-container">
+    <h1>커뮤니티 블로그</h1>
+
+    <div class="filter-bar">
+        <form method="get" class="search-bar">
+            <input type="text" name="search" placeholder="검색어를 입력하세요" value="{{ request.GET.search }}" class="form-control">
+            <button type="submit" class="btn btn-primary">검색</button>
+        </form>
+        <div class="categories">
+            <span>카테고리:</span>
+            {% for category in categories %}
+            <a href="?category={{ category }}">{{ category }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+<div class="blog-cards">
     {% for post in posts %}
-    <li>
-        <a href="{% url 'community:blog_detail' post.pk %}">{{ post.title }}</a>
-        by {{ post.author.username }} ({{ post.created_at }})
-    </li>
+    <div class="blog-card">
+        <!-- 이미지가 있는 경우 출력 -->
+        {% if post.image %}
+        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="blog-image">
+        {% endif %}
+        <h2 class="blog-title">{{ post.title }}</h2>
+        <p class="blog-category">카테고리: {{ post.category }}</p>
+        <p class="blog-author">작성자: {{ post.author }}</p>
+        <p class="blog-date">작성일: {{ post.created_at|date:"Y-m-d" }}</p>
+        <div class="blog-likes">
+            <p>좋아요: <span id="like-count-{{ post.id }}">{{ post.total_likes }}</span></p>
+            <button class="like-btn" data-id="{{ post.id }}">
+                {% if user in post.likes.all %}
+                ❤️ 좋아요 취소
+                {% else %}
+                🤍 좋아요
+                {% endif %}
+            </button>
+        </div>
+        <a href="{% url 'community:blog_detail' post.pk %}" class="btn btn-primary mt-2">자세히 보기</a>
+    </div>
     {% empty %}
-    <p>No blog posts available.</p>
+    <p class="text-center">게시된 글이 없습니다.</p>
     {% endfor %}
-</ul>
-<a href="{% url 'community:blog_create' %}">Create New Post</a>
+</div>
+
+
+    <div class="pagination">
+        {% if posts.has_previous %}
+        <a href="?page={{ posts.previous_page_number }}" class="btn btn-outline-primary">이전</a>
+        {% endif %}
+        <span>{{ posts.number }} / {{ posts.paginator.num_pages }}</span>
+        {% if posts.has_next %}
+        <a href="?page={{ posts.next_page_number }}" class="btn btn-outline-primary">다음</a>
+        {% endif %}
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'community:blog_create' %}" class="btn btn-success">글 작성하기</a>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const likeButtons = document.querySelectorAll('.like-btn');
+    likeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const postId = this.dataset.id;
+            fetch(`/community/like/${postId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const likeCount = document.getElementById(`like-count-${postId}`);
+                    likeCount.textContent = data.likes;
+                    this.textContent = data.liked ? '❤️ 좋아요 취소' : '🤍 좋아요';
+                }
+            });
+        });
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+</script>
 {% endblock %}

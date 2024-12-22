@@ -1,26 +1,165 @@
 {% extends "base.html" %}
 
-{% block title %}{{ post.title }}{% endblock %}
-
 {% block content %}
-<h1>{{ post.title }}</h1>
-<p>by {{ post.author }} ({{ post.created_at }})</p>
-<p>{{ post.content }}</p>
+<div class="blog-detail-container">
+    <h1 class="blog-title">{{ post.title }}</h1>
+    <p class="blog-meta">작성자: <strong>{{ post.author }}</strong> | 작성일: {{ post.created_at|date:"Y-m-d H:i" }}</p>
 
-<h2>Comments</h2>
-<ul>
-    {% for comment in comments %}
-    <li>{{ comment.content }} by {{ comment.author }} ({{ comment.created_at }})</li>
-    {% endfor %}
-</ul>
+    <!-- 이미지 출력 -->
+    {% if post.image %}
+    <div class="blog-image-container">
+        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="blog-image">
+    </div>
+    {% endif %}
 
-<h3>Add a Comment</h3>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Add Comment</button>
-</form>
+    <!-- 본문 내용 -->
+    <div class="blog-content">
+        <p>{{ post.content }}</p>
+    </div>
 
-<a href="{% url 'community:blog_edit' post.pk %}">Edit</a>
-<a href="{% url 'community:blog_delete' post.pk %}">Delete</a>
+    <!-- 댓글 섹션 -->
+    <div class="comments-section">
+        <h2 class="comments-title">댓글</h2>
+        {% if comments %}
+        <ul class="comments-list">
+            {% for comment in comments %}
+            <li class="comment-item">
+                <p class="comment-author">{{ comment.author }}</p>
+                <p class="comment-date">{{ comment.created_at|date:"Y-m-d H:i" }}</p>
+                <p class="comment-content">{{ comment.content }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="no-comments">아직 댓글이 없습니다. 첫 번째로 댓글을 작성해 보세요!</p>
+        {% endif %}
+    </div>
+
+    <!-- 댓글 작성 폼 -->
+    <div class="add-comment">
+        <h3>댓글 작성</h3>
+        <form method="post" class="comment-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">댓글 추가</button>
+        </form>
+    </div>
+
+    <!-- 수정 및 삭제 버튼 -->
+    <div class="blog-actions">
+        <a href="{% url 'community:blog_edit' post.pk %}" class="btn btn-warning">수정</a>
+        <a href="{% url 'community:blog_delete' post.pk %}" class="btn btn-danger">삭제</a>
+    </div>
+</div>
+
+<style>
+    /* 상세 페이지 스타일 */
+    .blog-detail-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .blog-title {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        color: #2c3e50;
+    }
+
+    .blog-meta {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        margin-bottom: 20px;
+    }
+
+    .blog-image-container {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .blog-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+
+    .blog-content {
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 30px;
+    }
+
+    .comments-section {
+        margin-top: 40px;
+    }
+
+    .comments-title {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: #34495e;
+    }
+
+    .comments-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .comment-item {
+        border-bottom: 1px solid #eee;
+        padding: 10px 0;
+    }
+
+    .comment-author {
+        font-weight: bold;
+        color: #3498db;
+    }
+
+    .comment-date {
+        font-size: 0.8rem;
+        color: #95a5a6;
+    }
+
+    .add-comment {
+        margin-top: 30px;
+    }
+
+    .add-comment h3 {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+
+    .blog-actions {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .blog-actions .btn {
+        text-decoration: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-size: 0.9rem;
+    }
+
+    .btn-warning {
+        background-color: #f39c12;
+        color: white;
+    }
+
+    .btn-warning:hover {
+        background-color: #e67e22;
+    }
+
+    .btn-danger {
+        background-color: #e74c3c;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #c0392b;
+    }
+</style>
 {% endblock %}

@@ -1,0 +1,291 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* 블로그 컨테이너 */
+.blog-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.blog-container h1 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+/* 검색 바 */
+.search-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    background-color: #2980b9;
+}
+
+/* 카테고리 스타일 */
+.categories {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.categories a {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+}
+
+.categories a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* 블로그 카드 */
+.blog-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.blog-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.blog-card h2 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.blog-card .blog-author, .blog-card .blog-date, .blog-card .blog-likes {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #7f8c8d;
+}
+
+/* 좋아요 버튼 */
+.like-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.like-btn:hover {
+    background-color: #c0392b;
+}
+
+/* 자세히 보기 버튼 */
+.detail-btn {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.detail-btn:hover {
+    background-color: #2980b9;
+}
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+}
+
+.pagination a:hover {
+    background-color: #007bff;
+    color: white;
+}
+.blog-card img.blog-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+.blog-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.blog-title {
+    font-size: 2.2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.blog-meta {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.blog-image-container {
+    margin: 20px 0;
+}
+
+.blog-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.blog-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 40px;
+}
+
+.comments-section {
+    margin-top: 40px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.comments-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.comments-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.comment-item {
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+.comment-author {
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 5px;
+}
+
+.comment-date {
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+.comment-content {
+    font-size: 1rem;
+    color: #333;
+}
+
+.no-comments {
+    font-style: italic;
+    color: #aaa;
+}
+
+.add-comment {
+    margin-top: 30px;
+}
+
+.comment-form .btn {
+    margin-top: 10px;
+}
+
+.blog-actions {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.blog-actions .btn {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.blog-actions .btn-warning {
+    background-color: #f39c12;
+}
+
+.blog-actions .btn-warning:hover {
+    background-color: #d98208;
+}
+
+.blog-actions .btn-danger {
+    background-color: #e74c3c;
+}
+
+.blog-actions .btn-danger:hover {
+    background-color: #c0392b;
+}
