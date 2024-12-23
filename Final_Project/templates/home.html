@@ -112,120 +112,85 @@
                 <div class="col-md-6 col-lg-3">
                     <div class="card shadow-sm p-3">
                         <h5 class="card-title text-center">영양분 상태</h5>
-                        <canvas id="nutrientChart"></canvas>
+                        <div id="nutrientChart" class="text-center">
+                            <!-- 가장 수량이 적은 항목을 JavaScript로 로드 -->
+                            <p class="text-center text-muted">로딩 중...</p>
+                        </div>
                     </div>
+                </div>
+
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <div class="card shadow-sm p-3">
                         <h5 class="card-title text-center">생장 상태</h5>
                         <div id="growthStatus" class="text-center">
-                            <p>생장 상태: 양호</p>
-                            <p>예상 수확일: 2025년 3월 15일</p>
+                            <p class="text-center text-muted">로딩 중...</p>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="card shadow-sm p-3">
-                        <h5 class="card-title text-center">AI 추천</h5>
-                        <div id="aiRecommendation" class="text-center">
-                            <p>수분 공급량 10% 증가 권장</p>
-                            <p>질소 비료 추가 필요</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 주요 기능 섹션 -->
-        <section class="my-5">
-            <h2 class="fw-bold text-secondary text-center mb-4">주요 기능</h2>
-            <div class="row text-center g-4">
-                <div class="col-md-4">
-                    <img src="{% static 'images/waterproof-5569978_1280.png' %}" class="feature-icon mb-3" alt="온습도 아이콘">
-                    <h5 class="fw-bold">온습도 관리</h5>
-                    <p>실시간 모니터링 및 자동 제어 시스템으로 최적의 생육 환경을 유지합니다.</p>
-                </div>
-                <div class="col-md-4">
-                    <img src="{% static 'images/steel-4395773_1280.jpg' %}" class="feature-icon mb-3" alt="농자재 아이콘">
-                    <h5 class="fw-bold">농자재 관리</h5>
-                    <p>효율적인 재고 관리와 사용량 추적으로 비용을 절감하고 생산성을 향상시킵니다.</p>
-                </div>
-                <div class="col-md-4">
-                    <img src="{% static 'images/men-6750367_1280.jpg' %}" class="feature-icon mb-3" alt="커뮤니티 아이콘">
-                    <h5 class="fw-bold">커뮤니티</h5>
-                    <p>농업 전문가와 농부들이 지식과 경험을 공유하는 활발한 커뮤니티에 참여하세요.</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- 푸터 -->
-
-
+    <!-- 추가 스크립트 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // 온도 및 습도 차트
-        const tempHumidityCtx = document.getElementById('tempHumidityChart').getContext('2d');
-        new Chart(tempHumidityCtx, {
-            type: 'line',
-            data: {
-                labels: ['1월', '2월', '3월', '4월', '5월'],
-                datasets: [{
-                    label: '온도 (°C)',
-                    data: [20, 22, 25, 23, 26],
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    tension: 0.1
-                }, {
-                    label: '습도 (%)',
-                    data: [60, 65, 70, 68, 72],
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    tension: 0.1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+        // 실시간 인기 게시물 업데이트
+        function fetchMostLikedPost() {
+            fetch('/community/most_liked_post/')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('growthStatus');
+                    if (data.most_liked_post) {
+                        container.innerHTML = `
+                            <h6>${data.most_liked_post.title}</h6>
+                            <p>좋아요 수: ${data.most_liked_post.likes}</p>
+                            <a href="${data.most_liked_post.url}" class="btn btn-primary btn-sm">게시물 보기</a>
+                        `;
+                    } else {
+                        container.innerHTML = `<p class="text-center text-muted">인기 게시물이 없습니다.</p>`;
                     }
-                }
-            }
-        });
+                })
+                .catch(error => console.error('Error:', error));
+        }
 
-        // 영양분 상태 차트
-        const nutrientCtx = document.getElementById('nutrientChart').getContext('2d');
-        new Chart(nutrientCtx, {
-            type: 'bar',
-            data: {
-                labels: ['질소', '인', '칼륨'],
-                datasets: [{
-                    label: '영양분 수준',
-                    data: [80, 65, 75],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.5)',
-                        'rgba(54, 162, 235, 0.5)',
-                        'rgba(255, 206, 86, 0.5)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100
-                    }
+        // 페이지 로드 시 및 10초마다 실행
+        document.addEventListener('DOMContentLoaded', fetchMostLikedPost);
+        setInterval(fetchMostLikedPost, 10000);
+
+        // 차트 데이터
+
+
+    function fetchLeastStockedMaterial() {
+        fetch('/carbon/least_stocked_material/')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('nutrientChart');
+                if (data.least_stocked && data.least_stocked.length > 0) {
+                    container.innerHTML = `
+                        <h6>가장 적은 재고</h6>
+                        <ul class="list-group">
+                            ${data.least_stocked.map(item => `
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    ${item.name}
+                                    <span class="badge bg-danger rounded-pill">${item.quantity}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    `;
+                } else {
+                    container.innerHTML = `<p class="text-center text-muted">데이터가 없습니다.</p>`;
                 }
-            }
-        });
-    </script>
-    <footer class="bg-primary text-white py-4">
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchLeastStockedMaterial);
+    setInterval(fetchLeastStockedMaterial, 10000);
+</script>
+
+
+    <footer class="bg-primary text-white py-4 fixed-bottom">
         <div class="container text-center">
             <p class="mb-2">&copy; 2024 스마트팜 통합관리 플랫폼. All Rights Reserved.</p>
             <ul class="list-inline">
@@ -235,6 +200,5 @@
             </ul>
         </div>
     </footer>
-
 </body>
 </html>
