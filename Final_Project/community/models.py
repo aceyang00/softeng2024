@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 import os
 from django.utils.text import slugify
+from django.contrib.auth.models import AbstractUser
+
 
 def upload_to(instance, filename):
     # 파일 이름과 확장자를 분리

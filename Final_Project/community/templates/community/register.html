@@ -68,7 +68,7 @@
 
 <div class="signup-container">
     <h2>회원가입</h2>
-    <form method="post" id="signup-form">  <!-- method="post" 추가 -->
+    <form id="signup-form">
         {% csrf_token %}
 
         <!-- 아이디 입력 -->
@@ -94,7 +94,9 @@
 
 <script>
     document.getElementById('signup-form').addEventListener('submit', function (e) {
-        let isValid = true;
+        e.preventDefault(); // 새로고침 방지
+
+        let isValid = true; // 폼 유효성 상태
 
         // 아이디 유효성 검사
         const username = document.getElementById('id_username').value.trim();
@@ -117,11 +119,10 @@
             passwordError.textContent = '';
         }
 
-        // 폼이 유효할 경우 서버로 전송
-        if (!isValid) {
-            e.preventDefault();  // 폼이 유효하지 않으면 전송 방지
+        // 폼이 유효할 경우 제출
+        if (isValid) {
+            this.submit();
         }
     });
 </script>
-
 {% endblock %}

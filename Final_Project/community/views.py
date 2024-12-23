@@ -175,3 +175,49 @@ def register(request):
 def profile(request, username):
     user = get_object_or_404(User, username=username)
     return render(request, 'community/profile.html', {'user': user})
+
+from django.shortcuts import render
+from community.models import BlogPost
+from carbon.models import AgriculturalMaterial
+from django.db.models import Count
+
+def home(request):
+    # Carbon 데이터
+    materials = AgriculturalMaterial.objects.all()
+
+    # 좋아요가 가장 많은 게시물 (동점이면 최신 게시물 우선)
+    most_liked_post = (
+        BlogPost.objects.annotate(total_likes=Count('likes'))
+        .order_by('-total_likes', '-created_at')
+        .first()
+    )
+
+    # 컨텍스트 데이터 전달
+    context = {
+        'materials': materials,
+        'most_liked_post': most_liked_post,
+    }
+    return render(request, 'home.html', context)
+
+from django.http import JsonResponse
+from django.db.models import Count
+from .models import BlogPost
+
+def most_liked_post_api(request):
+    # 좋아요 수가 가장 많은 게시물 가져오기
+    most_liked_post = (
+        BlogPost.objects.annotate(total_likes=Count('likes'))
+        .order_by('-total_likes', '-created_at')
+        .first()
+    )
+    if most_liked_post:
+        data = {
+            'id': most_liked_post.id,
+            'title': most_liked_post.title,
+            'likes': most_liked_post.likes.count(),
+            'url': f"/community/blog/{most_liked_post.id}/",
+        }
+    else:
+        data = None
+
+    return JsonResponse({'most_liked_post': data})
