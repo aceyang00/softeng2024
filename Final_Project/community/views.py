@@ -44,15 +44,27 @@ def blog_list(request):
 
 
 # 블로그 글 상세 보기
+from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import BlogPost, Comment
+from .forms import CommentForm
+
 @login_required
 def blog_detail(request, pk):
+    # 현재 게시물 가져오기
     post = get_object_or_404(BlogPost, pk=pk)
+
+    # 이전/다음 게시물 가져오기
+    previous_post = BlogPost.objects.filter(id__lt=post.id).order_by('-id').first()
+    next_post = BlogPost.objects.filter(id__gt=post.id).order_by('id').first()
+
+    # 댓글 가져오기
     comments = post.comments.all()
-    liked = False
 
-    if request.user.is_authenticated and post.likes.filter(id=request.user.id).exists():
-        liked = True
+    # 좋아요 상태 확인
+    liked = request.user.is_authenticated and post.likes.filter(id=request.user.id).exists()
 
+    # 댓글 폼 처리
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -64,13 +76,17 @@ def blog_detail(request, pk):
     else:
         form = CommentForm()
 
+    # 컨텍스트 데이터 전달
     return render(request, 'community/blog_detail.html', {
         'post': post,
+        'previous_post': previous_post,
+        'next_post': next_post,
         'comments': comments,
         'form': form,
         'liked': liked,
         'total_likes': post.likes.count(),
     })
+
 
 
 # 좋아요 기능 - AJAX 지원

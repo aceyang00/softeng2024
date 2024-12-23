@@ -6,62 +6,87 @@
 {% block content %}
 <div class="container mt-5">
     <!-- 헤더 -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-center flex-grow-1">농업 커뮤니티 피드</h1>
-        <a href="{% url 'community:blog_create' %}" class="btn btn-success">✍️ 새 글 작성</a>
-    </div>
+    <header class="py-5 bg-light border-bottom mb-4">
+        <div class="container text-center">
+            <h1 class="fw-bold">농업 커뮤니티 피드</h1>
+            <p class="lead">농업에 대한 이야기를 나눌 수 있는 공간입니다.</p>
+            <a href="{% url 'community:blog_create' %}" class="btn btn-primary mt-3">✍️ 새 글 작성</a>
+        </div>
+    </header>
 
     <!-- 메인 콘텐츠 -->
-    <div class="row">
-        <div class="col-md-8">
-            {% for post in posts %}
-        <div class="card mb-4 shadow-sm">
-            {% if post.image and post.image.url %}
-            <img class="card-img-top" src="{{ post.image.url }}" alt="{{ post.title }}">
-            {% else %}
-            <img class="card-img-top" src="https://picsum.photos/800/400?random={{ forloop.counter }}" alt="기본 이미지">
+    <div class="row mt-4">
+        <!-- 블로그 포스트 리스트 -->
+        <div class="col-lg-8">
+            {% if selected_category %}
+            <div class="alert alert-info d-flex justify-content-between align-items-center">
+                <span>현재 선택된 카테고리: <strong>{{ selected_category }}</strong></span>
+                <a href="{% url 'community:blog_list' %}" class="btn btn-sm btn-secondary">전체 보기</a>
+            </div>
             {% endif %}
-            <p>{{ post.image }}</p>
-            <div class="card-body">
-                <h3 class="card-title">{{ post.title }}</h3>
-                <p class="card-text">{{ post.content|truncatewords:20 }}</p>
-                <p>{{ post.image }}</p>
-
-                <a href="{% url 'community:blog_detail' post.pk %}" class="btn btn-outline-primary">자세히 보기 →</a>
-            </div>
-            <div class="card-footer d-flex justify-content-between align-items-center bg-light">
-                <small>작성자: {{ post.author }} | {{ post.created_at|date:"Y-m-d H:i" }}</small>
-                <div class="d-flex align-items-center like-container">
-                    <button class="btn btn-sm like-btn" data-id="{{ post.id }}">
-                        {% if user in post.likes.all %}
-                        ❤️ 좋아요
+            <div class="row">
+                {% for post in posts %}
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm h-100">
+                        {% if post.image %}
+                        <a href="{% url 'community:blog_detail' post.pk %}">
+                            <img class="card-img-top" src="{{ post.image.url }}" alt="{{ post.title }}">
+                        </a>
                         {% else %}
-                        🤍 좋아요
+                        <a href="{% url 'community:blog_detail' post.pk %}">
+                            <img class="card-img-top" src="https://picsum.photos/800/400?random={{ forloop.counter }}" alt="기본 이미지">
+                        </a>
                         {% endif %}
-                    </button>
-                    <span id="like-count-{{ post.id }}" class="ml-2">{{ post.likes.count }}</span>
+                        <div class="card-body">
+                            <h3 class="card-title h5">
+                                <a href="{% url 'community:blog_detail' post.pk %}" class="text-dark text-decoration-none">{{ post.title }}</a>
+                            </h3>
+                            <div class="small text-muted mb-2">
+                                {{ post.created_at|date:"Y-m-d H:i" }} | 작성자: {{ post.author }}
+                            </div>
+                            <p class="card-text">{{ post.content|truncatewords:20 }}</p>
+                            <a href="{% url 'community:blog_detail' post.pk %}" class="btn btn-primary btn-sm">자세히 보기 →</a>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center like-container">
+                                <button class="btn btn-sm like-btn" data-id="{{ post.id }}">
+                                    {% if user in post.likes.all %}
+                                    ❤️ 좋아요
+                                    {% else %}
+                                    🤍 좋아요
+                                    {% endif %}
+                                </button>
+                                <span id="like-count-{{ post.id }}" class="ml-2">{{ post.likes.count }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
+                {% endfor %}
             </div>
-        </div>
-        {% endfor %}
-
 
             <!-- Pagination -->
-            <div class="mt-4">
-                {% if posts.has_previous %}
-                <a href="?page={{ posts.previous_page_number }}" class="btn btn-outline-secondary">이전</a>
-                {% endif %}
-                <span>{{ posts.number }} / {{ posts.paginator.num_pages }}</span>
-                {% if posts.has_next %}
-                <a href="?page={{ posts.next_page_number }}" class="btn btn-outline-secondary">다음</a>
-                {% endif %}
-            </div>
+            <nav aria-label="Pagination">
+                <ul class="pagination justify-content-center">
+                    {% if posts.has_previous %}
+                    <li class="page-item">
+                        <a href="?page={{ posts.previous_page_number }}" class="page-link">이전</a>
+                    </li>
+                    {% endif %}
+                    <li class="page-item disabled">
+                        <span class="page-link">{{ posts.number }} / {{ posts.paginator.num_pages }}</span>
+                    </li>
+                    {% if posts.has_next %}
+                    <li class="page-item">
+                        <a href="?page={{ posts.next_page_number }}" class="page-link">다음</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
         </div>
 
-        <!-- Sidebar Widgets -->
-        <div class="col-md-4">
-            <!-- Search -->
+        <!-- 사이드바 -->
+        <div class="col-lg-4">
+            <!-- 검색 -->
             <div class="card mb-4">
                 <div class="card-header">검색</div>
                 <div class="card-body">
@@ -69,25 +94,31 @@
                         <div class="input-group">
                             <input type="text" class="form-control" name="search" placeholder="검색어를 입력하세요"
                                 value="{{ request.GET.search }}">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="submit">검색</button>
-                            </div>
+                            <button class="btn btn-primary" type="submit">검색</button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <!-- Categories -->
+            <!-- 카테고리 -->
             <div class="card mb-4">
                 <div class="card-header">카테고리</div>
                 <div class="card-body">
-                    <ul class="list-unstyled">
+                    <ul class="list-unstyled mb-0">
                         {% for category in categories %}
-                        <li><a href="?category={{ category }}">{{ category }}</a></li>
+                        <li><a href="?category={{ category }}" class="text-decoration-none">{{ category }}</a></li>
                         {% empty %}
                         <li>카테고리가 없습니다.</li>
                         {% endfor %}
                     </ul>
+                </div>
+            </div>
+
+            <!-- 사이드 위젯 -->
+            <div class="card mb-4">
+                <div class="card-header">사이드 위젯</div>
+                <div class="card-body">
+                    커뮤니티에서 인기 있는 농업 관련 정보를 공유하세요!
                 </div>
             </div>
         </div>
