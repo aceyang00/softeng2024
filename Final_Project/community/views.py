@@ -9,10 +9,8 @@ from .models import BlogPost, Comment
 from .forms import BlogPostForm, CommentForm
 
 
-
 # 블로그 글 목록
 @login_required
-
 def blog_list(request):
     search_query = request.GET.get('search', '')
     category = request.GET.get('category', '')
@@ -23,7 +21,11 @@ def blog_list(request):
     if category:
         posts = posts.filter(category=category)
 
-    paginator = Paginator(posts, 6)  # 한 페이지에 6개씩 표시
+    for post in posts:
+        if not post.image:
+            post.image = None  # 기본 이미지가 필요하면 여기에 경로를 추가할 수도 있음
+
+    paginator = Paginator(posts, 6)
     page_number = request.GET.get('page')
     posts = paginator.get_page(page_number)
 
@@ -37,9 +39,12 @@ def blog_list(request):
     })
 
 
+
+
+
+
 # 블로그 글 상세 보기
 @login_required
-
 def blog_detail(request, pk):
     post = get_object_or_404(BlogPost, pk=pk)
     comments = post.comments.all()
@@ -64,35 +69,36 @@ def blog_detail(request, pk):
         'comments': comments,
         'form': form,
         'liked': liked,
-        'total_likes': post.total_likes(),
+        'total_likes': post.likes.count(),
     })
 
 
-# 좋아요 기능
+# 좋아요 기능 - AJAX 지원
 @login_required
-def blog_like(request, pk):
-    post = get_object_or_404(BlogPost, pk=pk)
-    if request.user.is_authenticated:
+def like_post(request, post_id):
+    if request.method == 'POST':
+        post = get_object_or_404(BlogPost, id=post_id)
         if request.user in post.likes.all():
-            post.likes.remove(request.user)
+            post.likes.remove(request.user)  # 좋아요 취소
             liked = False
         else:
-            post.likes.add(request.user)
+            post.likes.add(request.user)  # 좋아요 추가
             liked = True
-        return JsonResponse({'liked': liked, 'total_likes': post.total_likes()})
-    return JsonResponse({'error': 'You must be logged in to like posts.'}, status=403)
+
+        return JsonResponse({
+            'status': 'success',
+            'liked': liked,
+            'likes': post.likes.count()
+        })
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
 
 
 # 블로그 글 작성
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .forms import BlogPostForm
-from .models import BlogPost
-
 @login_required
 def blog_create(request):
     if request.method == 'POST':
-        form = BlogPostForm(request.POST, request.FILES)  # 이미지 처리를 위해 request.FILES 추가
+        form = BlogPostForm(request.POST, request.FILES)  # request.FILES 추가
         if form.is_valid():
             blog_post = form.save(commit=False)
             blog_post.author = request.user
@@ -104,6 +110,8 @@ def blog_create(request):
 
 
 
+
+
 # 블로그 글 수정
 @login_required
 def blog_edit(request, pk):
@@ -112,7 +120,7 @@ def blog_edit(request, pk):
         return redirect('community:blog_detail', pk=pk)
 
     if request.method == 'POST':
-        form = BlogPostForm(request.POST, instance=post)
+        form = BlogPostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             form.save()
             return redirect('community:blog_detail', pk=pk)
@@ -145,3 +153,9 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'community/register.html', {'form': form})
+
+
+# 사용자 프로필
+def profile(request, username):
+    user = get_object_or_404(User, username=username)
+    return render(request, 'community/profile.html', {'user': user})

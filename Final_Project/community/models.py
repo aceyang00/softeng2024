@@ -1,14 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
+import os
+from django.utils.text import slugify
 
-# 블로그 글 모델
+def upload_to(instance, filename):
+    # 파일 이름과 확장자를 분리
+    name, ext = os.path.splitext(filename)
+    # 슬러그 형태로 파일 이름 변환 (한글 → 영어)
+    return f'blog_images/{slugify(name)}{ext}'
 
-
-
-from django.db import models
-
-from django.db import models
-from django.contrib.auth.models import User
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    image = models.ImageField(upload_to='profiles/', default='profiles/default.png')
 
 class BlogPost(models.Model):
     title = models.CharField(max_length=200)
@@ -17,8 +20,8 @@ class BlogPost(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
-    category = models.CharField(max_length=100, blank=True, null=True)  # 카테고리 추가
-    image = models.ImageField(upload_to='blog_images/', blank=True, null=True)  # 이미지 필드 추가
+    category = models.CharField(max_length=100, null=True, blank=True)
+    image = models.ImageField(upload_to=upload_to, null=True, blank=True)  # 파일 이름 처리
 
     def save(self, *args, **kwargs):
         if not self.category:  # 카테고리가 비어 있으면 None 설정

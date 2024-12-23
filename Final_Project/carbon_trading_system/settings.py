@@ -128,8 +128,14 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Media files (uploaded files)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# settings.py
+
+MEDIA_URL = '/media/'  # 브라우저에서 접근 가능한 URL 경로
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # 서버에서 파일이 저장되는 실제 경로
+ # 실제 서버의 파일 저장 경로
+
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

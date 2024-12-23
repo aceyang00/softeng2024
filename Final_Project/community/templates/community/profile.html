@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.username }}의 프로필{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <h2>{{ user.username }}의 프로필</h2>
+    <img src="{{ user.profile.image.url }}" alt="{{ user.username }}" class="profile-image">
+    <p>가입일: {{ user.date_joined|date:"Y-m-d" }}</p>
+    <p>작성한 게시물: {{ user.posts.count }}</p>
+    <h3>내가 좋아요한 게시물</h3>
+    <ul>
+        {% for post in user.liked_posts.all %}
+        <li>
+            <a href="{% url 'community:blog_detail' post.id %}">{{ post.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
