@@ -26,3 +26,19 @@ def calculate(request):
 
     materials = AgriculturalMaterial.objects.all()
     return render(request, 'carbon/calculate.html', {'materials': materials})
+
+from django.http import JsonResponse
+from .models import AgriculturalMaterial
+from django.db import models
+
+def least_stocked_material(request):
+    min_quantity = AgriculturalMaterial.objects.aggregate(min_quantity=models.Min('quantity'))['min_quantity']
+    materials = AgriculturalMaterial.objects.filter(quantity=min_quantity)
+    data = [
+        {'name': material.name, 'quantity': material.quantity}
+        for material in materials
+    ]
+    return JsonResponse({'least_stocked': data})
+
+
+
