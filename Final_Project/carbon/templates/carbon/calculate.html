@@ -64,52 +64,80 @@
     ];
 
     // Chart.js 데이터 초기화
-const ctx = document.getElementById('inventoryChart').getContext('2d');
-const inventoryChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: materials.map(material => material.name),
-        datasets: [{
-            label: '재고 수량',
-            data: materials.map(material => material.quantity),
-            backgroundColor: materials.map(material => {
-                if (material.quantity > 20) {
-                    return "rgba(54, 162, 235, 0.6)"; // 파랑
-                } else if (material.quantity > 15) {
-                    return "rgba(75, 192, 192, 0.6)"; // 청록
-                } else if (material.quantity > 10) {
-                    return "rgba(153, 102, 255, 0.6)"; // 보라
-                } else if (material.quantity > 5) {
-                    return "rgba(255, 206, 86, 0.6)"; // 노랑
-                } else {
-                    return "rgba(255, 99, 132, 0.6)"; // 빨강
+    const ctx = document.getElementById('inventoryChart').getContext('2d');
+    const inventoryChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: materials.map(material => material.name),
+            datasets: [{
+                label: '재고 수량',
+                data: materials.map(material => material.quantity),
+                backgroundColor: materials.map(material => {
+                    if (material.quantity > 20) return "rgba(54, 162, 235, 0.6)";
+                    if (material.quantity > 15) return "rgba(75, 192, 192, 0.6)";
+                    if (material.quantity > 10) return "rgba(153, 102, 255, 0.6)";
+                    if (material.quantity > 5) return "rgba(255, 206, 86, 0.6)";
+                    return "rgba(255, 99, 132, 0.6)";
+                }),
+                borderColor: materials.map(material => {
+                    if (material.quantity > 20) return "rgb(54, 162, 235)";
+                    if (material.quantity > 15) return "rgb(75, 192, 192)";
+                    if (material.quantity > 10) return "rgb(153, 102, 255)";
+                    if (material.quantity > 5) return "rgb(255, 206, 86)";
+                    return "rgb(255, 99, 132)";
+                }),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.dataset.label}: ${context.raw}개`;
+                        }
+                    }
+                },
+                title: {
+                    display: true,
+                    text: '농자재 재고 현황',
+                    font: {
+                        size: 20
+                    }
                 }
-            }),
-            borderColor: materials.map(material => {
-                if (material.quantity > 30) {
-                    return "rgb(54, 162, 235)"; // 파랑
-                } else if (material.quantity > 20) {
-                    return "rgb(75, 192, 192)"; // 청록
-                } else if (material.quantity > 15) {
-                    return "rgb(153, 102, 255)"; // 보라
-                } else if (material.quantity > 10) {
-                    return "rgb(255, 206, 86)"; // 노랑
-                } else {
-                    return "rgb(255, 99, 132)"; // 빨강
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 5
+                    }
                 }
-            }),
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true
             }
-        }
-    }
-});
+        },
+        plugins: [{
+            // 플러그인: 막대 위에 수량 표시
+            id: 'custom-tooltip',
+            afterDatasetsDraw(chart) {
+                const { ctx, data } = chart;
+                data.datasets.forEach((dataset, i) => {
+                    const meta = chart.getDatasetMeta(i);
+                    meta.data.forEach((bar, index) => {
+                        const value = dataset.data[index];
+                        ctx.fillStyle = 'black';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(value, bar.x, bar.y - 10);
+                    });
+                });
+            }
+        }]
+    });
 
     // 수량 변경 및 그래프 업데이트 함수
     function changeQuantity(id, delta) {
@@ -131,24 +159,18 @@ const inventoryChart = new Chart(ctx, {
         updateChart();
     }
 
-// 그래프 데이터 업데이트
-function updateChart() {
-    inventoryChart.data.datasets[0].data = materials.map(material => material.quantity);
-    inventoryChart.data.datasets[0].backgroundColor = materials.map(material => {
-        if (material.quantity > 20) {
-            return "rgba(54, 162, 235, 0.6)"; // 파랑
-        } else if (material.quantity > 15) {
-            return "rgba(75, 192, 192, 0.6)"; // 청록
-        } else if (material.quantity > 10) {
-            return "rgba(153, 102, 255, 0.6)"; // 보라
-        } else if (material.quantity > 5) {
-            return "rgba(255, 206, 86, 0.6)"; // 노랑
-        } else {
-            return "rgba(255, 99, 132, 0.6)"; // 빨강
-        }
-    });
-    inventoryChart.update();
-}
+    // 그래프 데이터 업데이트
+    function updateChart() {
+        inventoryChart.data.datasets[0].data = materials.map(material => material.quantity);
+        inventoryChart.data.datasets[0].backgroundColor = materials.map(material => {
+            if (material.quantity > 20) return "rgba(54, 162, 235, 0.6)";
+            if (material.quantity > 15) return "rgba(75, 192, 192, 0.6)";
+            if (material.quantity > 10) return "rgba(153, 102, 255, 0.6)";
+            if (material.quantity > 5) return "rgba(255, 206, 86, 0.6)";
+            return "rgba(255, 99, 132, 0.6)";
+        });
+        inventoryChart.update();
+    }
 
     // 수량 상태 클래스 업데이트
     function updateQuantityClass(element, quantity) {
