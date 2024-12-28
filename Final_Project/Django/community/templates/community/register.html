@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}회원가입{% endblock %}
+
+{% block content %}
+<style>
+    .signup-container {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        max-width: 400px;
+        margin: 50px auto;
+    }
+
+    .signup-container h2 {
+        margin-bottom: 20px;
+        color: #333;
+        text-align: center;
+    }
+
+    .signup-container form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .signup-container form p {
+        margin: 0;
+    }
+
+    .signup-container form label {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    .signup-container form input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .signup-container .helptext {
+        font-size: 12px;
+        color: #666;
+        margin-top: 2px;
+    }
+
+    .signup-container .errorlist {
+        color: #dc3545;
+        font-size: 12px;
+        list-style: none;
+        padding: 0;
+        margin: 5px 0;
+    }
+
+    .signup-container button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .signup-container button:hover {
+        background-color: #45a049;
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+    }
+
+    .login-link a {
+        color: #4caf50;
+        text-decoration: none;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="signup-container">
+    <h2>회원가입</h2>
+    <form method="POST" id="signup-form">
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.help_text %}
+            <span class="helptext">{{ field.help_text }}</span>
+            {% endif %}
+            {% for error in field.errors %}
+            <div class="errorlist">{{ error }}</div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+
+        <button type="submit">회원가입</button>
+    </form>
+    <p class="login-link">이미 계정이 있으신가요? <a href="{% url 'login' %}">로그인하기</a></p>
+</div>
+
+<script>
+    document.getElementById('signup-form').addEventListener('submit', function (e) {
+        const password1 = document.querySelector('input[name="password1"]').value;
+        const password2 = document.querySelector('input[name="password2"]').value;
+
+        if (password1 !== password2) {
+            e.preventDefault();
+            alert('비밀번호가 일치하지 않습니다.');
+            return false;
+        }
+    });
+</script>
+{% endblock %}
