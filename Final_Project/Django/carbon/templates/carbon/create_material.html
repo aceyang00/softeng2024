@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}농자재 추가{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center">농자재 추가</h1>
+    <form method="POST" class="mt-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary w-100">추가하기</button>
+    </form>
+    <div class="mt-3 text-center">
+        <a href="{% url 'carbon:calculate' %}" class="btn btn-secondary">취소</a>
+    </div>
+</div>
+{% endblock %}
